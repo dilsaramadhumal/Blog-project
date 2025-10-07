@@ -1,0 +1,39 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h2 class="card-title">{{ post.title }}</h2>
+            <p class="text-muted">Published by {{ post.author }} on {{ post.created_at|date:"d M Y" }}</p>
+            <hr>
+            <p class="card-text">{{ post.content }}</p>
+        </div>
+    </div>
+    <div class="mt-4">
+        <h4>Comments</h4>
+        {% for comment in comments %}
+        <div class="alert alert-secondary">
+            <p>{{ comment.content }}</p>
+            <small class="text-muted">by {{ comment.author }} on {{ comment.created_at|date:"d M Y H:i" }}</small>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="mt-4">
+        <h4>Add a Comment</h4>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-success">Submit Comment</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById('toggleCommentForm').addEventListener('click', function () {
+        const form = document.getElementById('commentForm');
+        form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    });
+</script>
+
+{% endblock %}
